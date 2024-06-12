@@ -1,6 +1,8 @@
-
-
 // ignore_for_file: prefer_const_constructors
+
+import 'dart:math';
+
+import 'package:construafacil/model/federais.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/federais_controller.dart';
@@ -107,58 +109,57 @@ class _PrincipalViewState extends State<PrincipalView> {
               ],
             ),
             SizedBox(height: 20),
-            if (isSearching)
-              ...[
-                TextField(
-                  controller: txtTitulo,
-                  decoration: InputDecoration(
-                    labelText: 'Titulo',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+            if (isSearching) ...[
+              TextField(
+                controller: txtTitulo,
+                decoration: InputDecoration(
+                  labelText: 'Titulo',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: txtNumero,
-                  decoration: InputDecoration(
-                    labelText: 'Número',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: txtNumero,
+                decoration: InputDecoration(
+                  labelText: 'Número',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: txtDescricao,
-                  decoration: InputDecoration(
-                    labelText: 'Descrição',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: txtDescricao,
+                decoration: InputDecoration(
+                  labelText: 'Descrição',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: txtData,
-                  decoration: InputDecoration(
-                    labelText: 'Data de Publicação',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: txtData,
+                decoration: InputDecoration(
+                  labelText: 'Data de Publicação',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: txtPalavras,
-                  decoration: InputDecoration(
-                    labelText: 'Palavras-chave',
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: txtPalavras,
+                decoration: InputDecoration(
+                  labelText: 'Palavras-chave',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-              ],
+              ),
+            ],
             if (!isSearching && selectedCollection != null)
               Expanded(
                 child: ListView.builder(
@@ -172,217 +173,6 @@ class _PrincipalViewState extends State<PrincipalView> {
               ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("Pesquisar"),
-                content: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        controller: txtTitulo,
-                        decoration: InputDecoration(
-                          labelText: 'Titulo',
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: txtNumero,
-                        decoration: InputDecoration(
-                          labelText: 'Número',
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: txtDescricao,
-                        decoration: InputDecoration(
-                          labelText: 'Descrição',
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: txtData,
-                        decoration: InputDecoration(
-                          labelText: 'Data de Publicação',
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: txtPalavras,
-                        decoration: InputDecoration(
-                          labelText: 'Palavras-chave',
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Fechar'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      String normaEncontrada = "https://exemplo.com/norma";
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return StatefulBuilder(
-                            builder: (context, setState) {
-                              return AlertDialog(
-                                title: Text("Norma Encontrada"),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text("Link da Norma Encontrada:"),
-                                      Text(normaEncontrada),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Não'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Mostra opções de coleção para salvar
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return StatefulBuilder(
-                                            builder: (context, setState) {
-                                              return AlertDialog(
-                                                title: Text("Salvar em Coleção"),
-                                                content: SingleChildScrollView(
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: [
-                                                      RadioListTile(
-                                                        title: Text('Federais'),
-                                                        value: 'Federais',
-                                                        groupValue: selectedCollection,
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            selectedCollection = value;
-                                                          });
-                                                        },
-                                                      ),
-                                                      RadioListTile(
-                                                        title: Text('Estaduais'),
-                                                        value: 'Estaduais',
-                                                        groupValue: selectedCollection,
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            selectedCollection = value;
-                                                          });
-                                                        },
-                                                      ),
-                                                      RadioListTile(
-                                                        title: Text('Municipais'),
-                                                        value: 'Municipais',
-                                                        groupValue: selectedCollection,
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            selectedCollection = value;
-                                                          });
-                                                        },
-                                                      ),
-                                                      RadioListTile(
-                                                        title: Text('Outras'),
-                                                        value: 'Outras',
-                                                        groupValue: selectedCollection,
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            selectedCollection = value;
-                                                          });
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                actions: [
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      if (selectedCollection != null) {
-                                                        switch (selectedCollection) {
-                                                          case 'Federais':
-                                                            var federaisController = FederaisController();
-                                                            federaisController.adicionarFederais(context);
-                                                            break;
-                                                          case 'Estaduais':                                                           
-                                                            var estaduaisController = EstaduaisController();
-                                                            estaduaisController.adicionarEstaduais(context);
-                                                            break;
-                                                          case 'Municipais':                                                           
-                                                            var municipaisController = MunicipaisController();
-                                                            municipaisController.adicionarMunicipais(context);
-                                                            break;
-                                                          case 'Outras':                                              
-                                                            var outrasController = OutrasController();
-                                                            outrasController.adicionarOutras(context);
-                                                            break;
-                                                        }                       
-                                                        Navigator.pushNamed(context, selectedCollection!.toLowerCase()); // Direciona para a tela da coleção selecionada
-                                                      }
-                                                    },
-                                                    child: Text('Salvar?'),
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    child: Text('Cancelar'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Text('Sim'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                    child: Text('Pesquisar'),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child: isSearching ? Icon(Icons.search) : Icon(Icons.add),
       ),
     );
   }

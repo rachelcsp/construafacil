@@ -1,16 +1,20 @@
-// ignore_for_file: prefer_const_constructors, dead_code, unnecessary_import
+// ignore_for_file: prefer_const_constructors, dead_code
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:construafacil/controller/estaduais_controller.dart';
+import 'package:construafacil/model/estaduais.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-import '../controller/login_controller.dart';
 import '../controller/federais_controller.dart';
+import '../controller/login_controller.dart';
 import '../model/federais.dart';
 
 class FederaisView extends StatefulWidget {
   const FederaisView({super.key});
 
-   @override
+  @override
   State<FederaisView> createState() => _FederaisViewState();
 }
 
@@ -22,15 +26,16 @@ class _FederaisViewState extends State<FederaisView> {
   TextEditingController txtPalavras = TextEditingController();
   TextEditingController txtLink = TextEditingController();
 
-
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: Color.fromARGB(255, 44, 27, 237),
-        title: Text('Federais', style: TextStyle(color: Colors.white),),
-        
+        title: Text(
+          'Federais',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Center(
         child: StreamBuilder<QuerySnapshot>(
@@ -60,7 +65,6 @@ class _FederaisViewState extends State<FederaisView> {
                   return ListView.builder(
                     itemCount: dados.size,
                     itemBuilder: (context, index) {
-
                       //ID do documento
                       String id = dados.docs[index].id;
 
@@ -71,47 +75,44 @@ class _FederaisViewState extends State<FederaisView> {
                         child: ListTile(
                           title: Text(item['titulo']),
                           subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                          Text(item['numero']),
-                          Text(item['palavras_chave']),
-                          Text(item['data_publicacao']),
-                          Text(item['descricao']),
-                          Text(item['link']),
-                          ],
-                          ),//
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item['numero']),
+                              Text(item['palavras_chave']),
+                              Text(item['data_publicacao']),
+                              Text(item['descricao']),
+                              Text(item['link']),
+                            ],
+                          ), //
                           // Atualizar e Excluir Tarefas
                           //
-                           trailing: SizedBox(
+                          trailing: SizedBox(
                             width: 80,
                             child: Row(
                               children: [
                                 IconButton(
                                   onPressed: () {
-
                                     txtTitulo.text = item['titulo'];
                                     txtNumero.text = item['numero'];
-                                    txtPalavras.text = item ['palavras_chave'];
-                                    txtData.text = item ['data_publicacao'];
+                                    txtPalavras.text = item['palavras_chave'];
+                                    txtData.text = item['data_publicacao'];
                                     txtDescricao.text = item['descricao'];
                                     txtLink.text = item['link'];
-                                    salvarFederais(context,docId: id);
-
+                                    salvarFederais(context, docId: id);
                                   },
                                   icon: Icon(Icons.edit_rounded),
                                 ),
                                 IconButton(
                                   onPressed: () {
-
-                                    FederaisController().excluirFederais(context, id);
-
+                                    FederaisController()
+                                        .excluirFederais(context, id);
                                   },
                                   icon: Icon(Icons.delete_rounded),
                                 ),
                               ],
                             ),
                           ),
-                          onTap: (){},
+                          onTap: () {},
                         ),
                       );
                     },
@@ -125,8 +126,15 @@ class _FederaisViewState extends State<FederaisView> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          salvarFederais(context);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
+
   //
   // ADICIONAR TAREFA
   //
@@ -158,10 +166,9 @@ class _FederaisViewState extends State<FederaisView> {
                     labelText: 'numero',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtPalavras,
                   maxLines: 1,
@@ -169,10 +176,9 @@ class _FederaisViewState extends State<FederaisView> {
                     labelText: 'palavras_chave',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtData,
                   maxLines: 1,
@@ -180,10 +186,9 @@ class _FederaisViewState extends State<FederaisView> {
                     labelText: 'data_publicacao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtDescricao,
                   maxLines: 1,
@@ -191,7 +196,6 @@ class _FederaisViewState extends State<FederaisView> {
                     labelText: 'descricao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
                 SizedBox(height: 5),
@@ -202,7 +206,6 @@ class _FederaisViewState extends State<FederaisView> {
                     labelText: 'link',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
               ],
@@ -226,7 +229,7 @@ class _FederaisViewState extends State<FederaisView> {
               child: Text("salvar"),
               onPressed: () {
                 //criação do objeto
-                  var f = Federais(
+                var f = Federais(
                   LoginController().idUsuario(),
                   txtTitulo.text,
                   txtNumero.text,
@@ -236,12 +239,11 @@ class _FederaisViewState extends State<FederaisView> {
                   txtLink.text,
                 );
 
-                  if (docId == null){
-                  //ColecoesController().adicionarMunicipais(context, c);
-                }else{
+                if (docId == null) {
+                  FederaisController().adicionarFederais(context, f);
+                } else {
                   FederaisController().atualizarFederais(context, docId, f);
                 }
-
 
                 txtTitulo.clear();
                 txtNumero.clear();
@@ -257,7 +259,3 @@ class _FederaisViewState extends State<FederaisView> {
     );
   }
 }
-
-
-
-

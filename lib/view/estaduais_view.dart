@@ -11,11 +11,10 @@ import '../controller/estaduais_controller.dart';
 import '../controller/login_controller.dart';
 import '../model/estaduais.dart';
 
-
 class EstaduaisView extends StatefulWidget {
   const EstaduaisView({super.key});
 
-   @override
+  @override
   State<EstaduaisView> createState() => _EstaduaisViewState();
 }
 
@@ -27,15 +26,16 @@ class _EstaduaisViewState extends State<EstaduaisView> {
   TextEditingController txtPalavras = TextEditingController();
   TextEditingController txtLink = TextEditingController();
 
-
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: Color.fromARGB(255, 44, 27, 237),
-        title: Text('Estaduais', style: TextStyle(color: Colors.white),),
-        
+        title: Text(
+          'Estaduais',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Center(
         child: StreamBuilder<QuerySnapshot>(
@@ -65,7 +65,6 @@ class _EstaduaisViewState extends State<EstaduaisView> {
                   return ListView.builder(
                     itemCount: dados.size,
                     itemBuilder: (context, index) {
-
                       //ID do documento
                       String id = dados.docs[index].id;
 
@@ -76,47 +75,44 @@ class _EstaduaisViewState extends State<EstaduaisView> {
                         child: ListTile(
                           title: Text(item['titulo']),
                           subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                          Text(item['numero']),
-                          Text(item['palavras_chave']),
-                          Text(item['data_publicacao']),
-                          Text(item['descricao']),
-                          Text(item['link']),
-                          ],
-                          ),//
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item['numero']),
+                              Text(item['palavras_chave']),
+                              Text(item['data_publicacao']),
+                              Text(item['descricao']),
+                              Text(item['link']),
+                            ],
+                          ), //
                           // Atualizar e Excluir Tarefas
                           //
-                           trailing: SizedBox(
+                          trailing: SizedBox(
                             width: 80,
                             child: Row(
                               children: [
                                 IconButton(
                                   onPressed: () {
-
                                     txtTitulo.text = item['titulo'];
                                     txtNumero.text = item['numero'];
-                                    txtPalavras.text = item ['palavras_chave'];
-                                    txtData.text = item ['data_publicacao'];
+                                    txtPalavras.text = item['palavras_chave'];
+                                    txtData.text = item['data_publicacao'];
                                     txtDescricao.text = item['descricao'];
                                     txtLink.text = item['link'];
-                                    salvarEstaduais(context,docId: id);
-
+                                    salvarEstaduais(context, docId: id);
                                   },
                                   icon: Icon(Icons.edit_rounded),
                                 ),
                                 IconButton(
                                   onPressed: () {
-
-                                    EstaduaisController().excluirEstaduais(context, id);
-
+                                    EstaduaisController()
+                                        .excluirEstaduais(context, id);
                                   },
                                   icon: Icon(Icons.delete_rounded),
                                 ),
                               ],
                             ),
                           ),
-                          onTap: (){},
+                          onTap: () {},
                         ),
                       );
                     },
@@ -130,8 +126,15 @@ class _EstaduaisViewState extends State<EstaduaisView> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          salvarEstaduais(context);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
+
   //
   // ADICIONAR TAREFA
   //
@@ -163,10 +166,9 @@ class _EstaduaisViewState extends State<EstaduaisView> {
                     labelText: 'numero',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtPalavras,
                   maxLines: 1,
@@ -174,10 +176,9 @@ class _EstaduaisViewState extends State<EstaduaisView> {
                     labelText: 'palavras_chave',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtData,
                   maxLines: 1,
@@ -185,10 +186,9 @@ class _EstaduaisViewState extends State<EstaduaisView> {
                     labelText: 'data_publicacao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtDescricao,
                   maxLines: 1,
@@ -196,7 +196,6 @@ class _EstaduaisViewState extends State<EstaduaisView> {
                     labelText: 'descricao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
                 SizedBox(height: 5),
@@ -207,7 +206,6 @@ class _EstaduaisViewState extends State<EstaduaisView> {
                     labelText: 'link',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
               ],
@@ -241,9 +239,9 @@ class _EstaduaisViewState extends State<EstaduaisView> {
                   txtLink.text,
                 );
 
-                if (docId == null){
-                  EstaduaisController().adicionarEstaduais(context);
-                }else{
+                if (docId == null) {
+                  EstaduaisController().adicionarEstaduais(context, e);
+                } else {
                   EstaduaisController().atualizarEstaduais(context, docId, e);
                 }
 
@@ -261,7 +259,3 @@ class _EstaduaisViewState extends State<EstaduaisView> {
     );
   }
 }
-
-
-
-

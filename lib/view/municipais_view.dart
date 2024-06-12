@@ -1,16 +1,20 @@
-// ignore_for_file: prefer_const_constructors, dead_code, unnecessary_import
+// ignore_for_file: prefer_const_constructors, dead_code
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:construafacil/controller/municipais_controller.dart';
+import 'package:construafacil/model/municipais.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-import '../controller/login_controller.dart';
 import '../controller/municipais_controller.dart';
+import '../controller/login_controller.dart';
 import '../model/municipais.dart';
 
 class MunicipaisView extends StatefulWidget {
   const MunicipaisView({super.key});
 
-   @override
+  @override
   State<MunicipaisView> createState() => _MunicipaisViewState();
 }
 
@@ -22,15 +26,16 @@ class _MunicipaisViewState extends State<MunicipaisView> {
   TextEditingController txtPalavras = TextEditingController();
   TextEditingController txtLink = TextEditingController();
 
-
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: Color.fromARGB(255, 44, 27, 237),
-        title: Text('Municipais', style: TextStyle(color: Colors.white),),
-        
+        title: Text(
+          'Municipais',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Center(
         child: StreamBuilder<QuerySnapshot>(
@@ -60,7 +65,6 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   return ListView.builder(
                     itemCount: dados.size,
                     itemBuilder: (context, index) {
-
                       //ID do documento
                       String id = dados.docs[index].id;
 
@@ -71,47 +75,44 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                         child: ListTile(
                           title: Text(item['titulo']),
                           subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                          Text(item['numero']),
-                          Text(item['palavras_chave']),
-                          Text(item['data_publicacao']),
-                          Text(item['descricao']),
-                          Text(item['link']),
-                          ],
-                          ),//
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item['numero']),
+                              Text(item['palavras_chave']),
+                              Text(item['data_publicacao']),
+                              Text(item['descricao']),
+                              Text(item['link']),
+                            ],
+                          ), //
                           // Atualizar e Excluir Tarefas
                           //
-                           trailing: SizedBox(
+                          trailing: SizedBox(
                             width: 80,
                             child: Row(
                               children: [
                                 IconButton(
                                   onPressed: () {
-
                                     txtTitulo.text = item['titulo'];
                                     txtNumero.text = item['numero'];
-                                    txtPalavras.text = item ['palavras_chave'];
-                                    txtData.text = item ['data_publicacao'];
+                                    txtPalavras.text = item['palavras_chave'];
+                                    txtData.text = item['data_publicacao'];
                                     txtDescricao.text = item['descricao'];
                                     txtLink.text = item['link'];
-                                    salvarMunicipais(context,docId: id);
-
+                                    salvarMunicipais(context, docId: id);
                                   },
                                   icon: Icon(Icons.edit_rounded),
                                 ),
                                 IconButton(
                                   onPressed: () {
-
-                                    MunicipaisController().excluirMunicipais(context, id);
-
+                                    MunicipaisController()
+                                        .excluirMunicipais(context, id);
                                   },
                                   icon: Icon(Icons.delete_rounded),
                                 ),
                               ],
                             ),
                           ),
-                          onTap: (){},
+                          onTap: () {},
                         ),
                       );
                     },
@@ -125,8 +126,15 @@ class _MunicipaisViewState extends State<MunicipaisView> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          salvarMunicipais(context);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
+
   //
   // ADICIONAR TAREFA
   //
@@ -136,7 +144,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
       builder: (BuildContext context) {
         // retorna um objeto do tipo Dialog
         return AlertDialog(
-          title: Text((docId == null) ? "Adicionar Federais" : "Editar "),
+          title: Text((docId == null) ? "Adicionar Municipais" : "Editar "),
           content: SizedBox(
             height: 450,
             width: 300,
@@ -158,10 +166,9 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                     labelText: 'numero',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtPalavras,
                   maxLines: 1,
@@ -169,10 +176,9 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                     labelText: 'palavras_chave',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtData,
                   maxLines: 1,
@@ -180,10 +186,9 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                     labelText: 'data_publicacao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
-                     SizedBox(height: 5),
+                SizedBox(height: 5),
                 TextField(
                   controller: txtDescricao,
                   maxLines: 1,
@@ -191,7 +196,6 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                     labelText: 'descricao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
                 SizedBox(height: 5),
@@ -202,7 +206,6 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                     labelText: 'link',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
-                
                   ),
                 ),
               ],
@@ -226,7 +229,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
               child: Text("salvar"),
               onPressed: () {
                 //criação do objeto
-                  var m = Municipais(
+                var m = Municipais(
                   LoginController().idUsuario(),
                   txtTitulo.text,
                   txtNumero.text,
@@ -236,12 +239,11 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   txtLink.text,
                 );
 
-                  if (docId == null){
-                  //MunicipaisController().adicionarMunicipais(context, m);
-                }else{
+                if (docId == null) {
+                  MunicipaisController().adicionarMunicipais(context, m);
+                } else {
                   MunicipaisController().atualizarMunicipais(context, docId, m);
                 }
-
 
                 txtTitulo.clear();
                 txtNumero.clear();
@@ -257,7 +259,3 @@ class _MunicipaisViewState extends State<MunicipaisView> {
     );
   }
 }
-
-
-
-
