@@ -1,17 +1,11 @@
-// ignore_for_file: prefer_const_constructors, dead_code
+// ignore_for_file: prefer_const_constructors, dead_code, unnecessary_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:construafacil/controller/municipais_controller.dart';
-import 'package:construafacil/model/municipais.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 
 import '../controller/login_controller.dart';
 import '../controller/municipais_controller.dart';
 import '../model/municipais.dart';
-
 
 class MunicipaisView extends StatefulWidget {
   const MunicipaisView({super.key});
@@ -41,7 +35,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
       body: Center(
         child: StreamBuilder<QuerySnapshot>(
           //fluxo de dados
-          stream: MunicipaisController().listarMunicipais(),
+          stream: MunicipaisController().listarMunicipais().snapshots(),
           //exibição dos dados
           builder: (context, snapshot) {
             //verificar a conectividade
@@ -101,7 +95,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                                     txtData.text = item ['data_publicacao'];
                                     txtDescricao.text = item['descricao'];
                                     txtLink.text = item['link'];
-                                    salvarColecoes(context,docId: id);
+                                    salvarMunicipais(context,docId: id);
 
                                   },
                                   icon: Icon(Icons.edit_rounded),
@@ -124,7 +118,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   );
                 } else {
                   return Center(
-                    child: Text("Nenhuma coelção encontrada."),
+                    child: Text("Nenhuma coleção encontrada."),
                   );
                 }
             }
@@ -136,13 +130,13 @@ class _MunicipaisViewState extends State<MunicipaisView> {
   //
   // ADICIONAR TAREFA
   //
-  void salvarColecoes(context, {docId}) {
+  void salvarMunicipais(context, {docId}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // retorna um objeto do tipo Dialog
         return AlertDialog(
-          title: Text((docId == null) ? "Adicionar Municipais" : "Editar "),
+          title: Text((docId == null) ? "Adicionar Federais" : "Editar "),
           content: SizedBox(
             height: 450,
             width: 300,
@@ -151,7 +145,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                 TextField(
                   controller: txtTitulo,
                   decoration: InputDecoration(
-                    labelText: 'Título',
+                    labelText: 'titulo',
                     prefixIcon: Icon(Icons.description),
                     border: OutlineInputBorder(),
                   ),
@@ -161,7 +155,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   controller: txtNumero,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Número',
+                    labelText: 'numero',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -172,7 +166,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   controller: txtPalavras,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Palavras-Chave',
+                    labelText: 'palavras_chave',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -183,7 +177,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   controller: txtData,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Data Publicação',
+                    labelText: 'data_publicacao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -194,7 +188,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   controller: txtDescricao,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Descrição',
+                    labelText: 'descricao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -205,7 +199,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   controller: txtLink,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Link',
+                    labelText: 'link',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -232,7 +226,7 @@ class _MunicipaisViewState extends State<MunicipaisView> {
               child: Text("salvar"),
               onPressed: () {
                 //criação do objeto
-                var m = Municipais(
+                  var m = Municipais(
                   LoginController().idUsuario(),
                   txtTitulo.text,
                   txtNumero.text,
@@ -242,11 +236,12 @@ class _MunicipaisViewState extends State<MunicipaisView> {
                   txtLink.text,
                 );
 
-                if (docId == null){
-                  //ColecoesController().adicionarMunicipais(context, c);
+                  if (docId == null){
+                  //MunicipaisController().adicionarMunicipais(context, m);
                 }else{
                   MunicipaisController().atualizarMunicipais(context, docId, m);
                 }
+
 
                 txtTitulo.clear();
                 txtNumero.clear();

@@ -1,12 +1,7 @@
-// ignore_for_file: prefer_const_constructors, dead_code
+// ignore_for_file: prefer_const_constructors, dead_code, unnecessary_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:construafacil/controller/outras_controller.dart';
-import 'package:construafacil/model/outras.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 
 import '../controller/login_controller.dart';
 import '../controller/outras_controller.dart';
@@ -40,7 +35,7 @@ class _OutrasViewState extends State<OutrasView> {
       body: Center(
         child: StreamBuilder<QuerySnapshot>(
           //fluxo de dados
-          stream: OutrasController().listarOutras(),
+          stream: OutrasController().listarOutras().snapshots(),
           //exibição dos dados
           builder: (context, snapshot) {
             //verificar a conectividade
@@ -100,7 +95,7 @@ class _OutrasViewState extends State<OutrasView> {
                                     txtData.text = item ['data_publicacao'];
                                     txtDescricao.text = item['descricao'];
                                     txtLink.text = item['link'];
-                                    salvarColecoes(context,docId: id);
+                                    salvarOutras(context,docId: id);
 
                                   },
                                   icon: Icon(Icons.edit_rounded),
@@ -123,7 +118,7 @@ class _OutrasViewState extends State<OutrasView> {
                   );
                 } else {
                   return Center(
-                    child: Text("Nenhuma coelção encontrada."),
+                    child: Text("Nenhuma coleção encontrada."),
                   );
                 }
             }
@@ -135,13 +130,13 @@ class _OutrasViewState extends State<OutrasView> {
   //
   // ADICIONAR TAREFA
   //
-  void salvarColecoes(context, {docId}) {
+  void salvarOutras(context, {docId}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // retorna um objeto do tipo Dialog
         return AlertDialog(
-          title: Text((docId == null) ? "Adicionar Outras" : "Editar "),
+          title: Text((docId == null) ? "Adicionar Federais" : "Editar "),
           content: SizedBox(
             height: 450,
             width: 300,
@@ -150,7 +145,7 @@ class _OutrasViewState extends State<OutrasView> {
                 TextField(
                   controller: txtTitulo,
                   decoration: InputDecoration(
-                    labelText: 'Título',
+                    labelText: 'titulo',
                     prefixIcon: Icon(Icons.description),
                     border: OutlineInputBorder(),
                   ),
@@ -160,7 +155,7 @@ class _OutrasViewState extends State<OutrasView> {
                   controller: txtNumero,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Número',
+                    labelText: 'numero',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -171,7 +166,7 @@ class _OutrasViewState extends State<OutrasView> {
                   controller: txtPalavras,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Palavras-Chave',
+                    labelText: 'palavras_chave',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -182,7 +177,7 @@ class _OutrasViewState extends State<OutrasView> {
                   controller: txtData,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Data Publicação',
+                    labelText: 'data_publicacao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -193,7 +188,7 @@ class _OutrasViewState extends State<OutrasView> {
                   controller: txtDescricao,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Descrição',
+                    labelText: 'descricao',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -204,7 +199,7 @@ class _OutrasViewState extends State<OutrasView> {
                   controller: txtLink,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    labelText: 'Link',
+                    labelText: 'link',
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(),
                 
@@ -231,7 +226,7 @@ class _OutrasViewState extends State<OutrasView> {
               child: Text("salvar"),
               onPressed: () {
                 //criação do objeto
-                var o = Outras(
+                  var o = Outras(
                   LoginController().idUsuario(),
                   txtTitulo.text,
                   txtNumero.text,
@@ -241,11 +236,12 @@ class _OutrasViewState extends State<OutrasView> {
                   txtLink.text,
                 );
 
-                if (docId == null){
-                  OutrasController().adicionarOutras(context);
+                  if (docId == null){
+                  //OutrasController().adicionarOutras(context, o);
                 }else{
                   OutrasController().atualizarOutras(context, docId, o);
                 }
+
 
                 txtTitulo.clear();
                 txtNumero.clear();
