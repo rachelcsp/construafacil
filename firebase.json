@@ -1,0 +1,39 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "app-construa-facil",
+          "appId": "1:795339817494:android:137ec03aee4fdc2d7b6b37",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "app-construa-facil",
+          "configurations": {
+            "android": "1:795339817494:android:137ec03aee4fdc2d7b6b37",
+            "ios": "1:795339817494:ios:8f06ac7e930362a67b6b37",
+            "macos": "1:795339817494:ios:ba45880da330973f7b6b37",
+            "web": "1:795339817494:web:83fb81266dde07947b6b37",
+            "windows": "1:795339817494:web:ae184e003d177c0b7b6b37"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+firebase init hosting
+yes
+build/web
+yes
+no
+yes
+flutter build web
+firebase deploy --only hosting

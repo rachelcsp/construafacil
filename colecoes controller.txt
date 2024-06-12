@@ -1,0 +1,181 @@
+// ignore_for_file: unused_import
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+import '../model/colecoes.dart';
+import '../view/util.dart';
+import 'login_controller.dart';
+
+class ColecoesController {
+  void adicionarFederais(context) {
+    FirebaseFirestore.instance
+        .collection('federais')
+        .add(
+          {
+            'titulo' : 'Exemplo de título',
+            'numero' : '12345',
+            'palavras_chave' : 'palavra1, palavra2, palavra3',
+            'data_publicacao' : '01/01/2001',
+            'descricao' : 'Exemplo de descrição',
+            'link' : 'http://wwww.link.com.br'
+          }
+
+        )
+        .then((resultado) => sucesso(context, 'Tarefa adicionada com sucesso'))
+        .catchError((e) => erro(context, 'Não foi possível adicionar a tarefa'));
+  }
+
+  //Listar todas as tarefas do Usuário autenticado
+  listar(){
+    return FirebaseFirestore.instance.collection('federais');
+    
+  }
+
+  void atualizar(context,id, Colecoes c){
+    FirebaseFirestore.instance.collection('federais')
+      .doc(id)
+      .update(c.toJson())
+      .then((resultado) => sucesso(context, 'Norma atualizada com sucesso'))
+      .catchError((e) => erro(context, 'Não foi possível atualizar a tarefa'))
+      .whenComplete(() => Navigator.pop(context));
+  }
+
+  void excluir(context,id){
+     FirebaseFirestore.instance.collection('federais')
+      .doc(id)
+      .delete()
+      .then((resultado) => sucesso(context, 'Norma excluída com sucesso'))
+      .catchError((e) => erro(context, 'Não foi possível excluir a tarefa'));
+  }
+
+
+
+  void adicionarEstaduais(context) {
+    FirebaseFirestore.instance
+        .collection('estaduais')
+        .add(
+          {
+            'titulo' : 'Exemplo de título',
+            'numero' : '12345',
+            'palavras_chave' : 'palavra1, palavra2, palavra3',
+            'data_publicacao' : '01/01/2001',
+            'descricao' : 'Exemplo de descrição',
+            'link' : 'http://wwww.link.com.br'
+          }
+
+        )
+        .then((resultado) => sucesso(context, 'Tarefa adicionada com sucesso'))
+        .catchError((e) => erro(context, 'Não foi possível adicionar a tarefa'));
+  }
+
+  //Listar todas as tarefas do Usuário autenticado
+  listarEstaduais(){
+    return FirebaseFirestore.instance.collection('estaduais');
+     
+     
+  }
+
+  void atualizarEstaduais(context,id, Colecoes c){
+    FirebaseFirestore.instance.collection('estaduais')
+      .doc(id)
+      .update(c.toJson())
+      .then((resultado) => sucesso(context, 'Norma atualizada com sucesso'))
+      .catchError((e) => erro(context, 'Não foi possível atualizar a tarefa'))
+      .whenComplete(() => Navigator.pop(context));
+  }
+
+  void excluirEstaduais(context,id){
+     FirebaseFirestore.instance.collection('estaduais')
+      .doc(id)
+      .delete()
+      .then((resultado) => sucesso(context, 'Norma excluída com sucesso'))
+      .catchError((e) => erro(context, 'Não foi possível excluir a tarefa'));
+  }
+
+  void adicionarMunicipais(context) {
+    FirebaseFirestore.instance
+        .collection('municipais')
+        .add(
+          {
+            'titulo' : 'Exemplo de título',
+            'numero' : '12345',
+            'palavras_chave' : 'palavra1, palavra2, palavra3',
+            'data_publicacao' : '01/01/2001',
+            'descricao' : 'Exemplo de descrição',
+            'link' : 'http://wwww.link.com.br'
+          }
+
+        )
+        .then((resultado) => sucesso(context, 'Tarefa adicionada com sucesso'))
+        .catchError((e) => erro(context, 'Não foi possível adicionar a tarefa'));
+  }
+
+  //Listar todas as tarefas do Usuário autenticado
+  listarMunicipais(){
+    return FirebaseFirestore.instance.collection('municipais');
+     
+     
+  }
+
+  void atualizarMunicipais(context,id, Colecoes c){
+    FirebaseFirestore.instance.collection('municipais')
+      .doc(id)
+      .update(c.toJson())
+      .then((resultado) => sucesso(context, 'Norma atualizada com sucesso'))
+      .catchError((e) => erro(context, 'Não foi possível atualizar a tarefa'))
+      .whenComplete(() => Navigator.pop(context));
+  }
+
+  void excluirMunicipais(context,id){
+     FirebaseFirestore.instance.collection('municipais')
+      .doc(id)
+      .delete()
+      .then((resultado) => sucesso(context, 'Norma excluída com sucesso'))
+      .catchError((e) => erro(context, 'Não foi possível excluir a tarefa'));
+  }
+
+  void adicionarOutras(context) {
+    FirebaseFirestore.instance
+        .collection('outras')
+        .add(
+          {
+            'titulo' : 'Exemplo de título',
+            'numero' : '12345',
+            'palavras_chave' : 'palavra1, palavra2, palavra3',
+            'data_publicacao' : '01/01/2001',
+            'descricao' : 'Exemplo de descrição',
+            'link' : 'http://wwww.link.com.br'
+          }
+
+        )
+        .then((resultado) => sucesso(context, 'Tarefa adicionada com sucesso'))
+        .catchError((e) => erro(context, 'Não foi possível adicionar a tarefa'));
+  }
+
+  //Listar todas as tarefas do Usuário autenticado
+  listarOutras(){
+    return FirebaseFirestore.instance.collection('outras');
+     
+     
+  }
+
+  void atualizarOutras(context,id, Colecoes c){
+    FirebaseFirestore.instance.collection('outras')
+      .doc(id)
+      .update(c.toJson())
+      .then((resultado) => sucesso(context, 'Norma atualizada com sucesso'))
+      .catchError((e) => erro(context, 'Não foi possível atualizar a tarefa'))
+      .whenComplete(() => Navigator.pop(context));
+  }
+
+  void excluirOutras(context,id){
+     FirebaseFirestore.instance.collection('outras')
+      .doc(id)
+      .delete()
+      .then((resultado) => sucesso(context, 'Norma excluída com sucesso'))
+      .catchError((e) => erro(context, 'Não foi possível excluir a tarefa'));
+  }
+
+
+}

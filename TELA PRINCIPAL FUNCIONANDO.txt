@@ -1,0 +1,258 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:construafacil/model/pesquisa_view.dart';
+import 'package:flutter/material.dart';
+
+import '../controller/login_controller.dart';
+import '../controller/pesquisa_controller.dart';
+
+class PrincipalView extends StatefulWidget {
+  const PrincipalView({super.key});
+
+  @override
+  State<PrincipalView> createState() => _PrincipalViewState();
+}
+
+class _PrincipalViewState extends State<PrincipalView> {
+  var txtTipo = TextEditingController();
+  var txtTitulo = TextEditingController();
+  var txtNumero = TextEditingController();
+  var txtDescricao = TextEditingController();
+  var txtData = TextEditingController();
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 44, 27, 237),
+        title: Text('Minhas Legislações', style: TextStyle(color: Colors.white)),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              LoginController().logout();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.exit_to_app, color: Colors.white),
+          )
+        ],
+      ),
+
+      // BODY
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        //
+        // LISTAR as tarefas
+        //
+        child: StreamBuilder<QuerySnapshot>(
+          //fluxo de dados
+          stream: PesquisaController().listar().snapshots(),
+          //exibição dos dados
+          builder: (context, snapshot) {
+            //verificar a conectividade
+            switch (snapshot.connectionState) {
+              //sem conexão
+              case ConnectionState.none:
+                return Center(
+                  child: Text("Falha na conexão."),
+                );
+
+              //conexão lenta
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+
+              //dados recuperados com sucesso
+              default:
+                final dados = snapshot.requireData;
+                if (dados.size > 0) {
+                  //exibir a lista de legislações salvas
+                  return ListView.builder(
+                    itemCount: dados.size,
+                    itemBuilder: (context, index) {
+
+                      //ID do documento
+                      String id = dados.docs[index].id;
+
+                      //DADOS armazenados no documento
+                      dynamic item = dados.docs[index].data();
+
+                      return Card(
+                        child: ListTile(
+                          title: Text(item['Tipo']),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Text(item['Titulo']),
+                            Text(item['Número']),
+                            Text(item['Descricao']),
+                            Text(item['Data Publicacao']),
+                             ],
+                          ),
+                          trailing: SizedBox(
+                            width: 80,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+
+                                    txtTipo.text = item['Tipo'];
+                                    txtTitulo.text = item['Titulo'];
+                                    txtNumero.text = item['Número'];
+                                    txtDescricao.text = item['Descrição'];
+                                    txtData.text = item['Data de Publicação'];
+                                    salvarLegislacao(context,docId: id);
+
+                                  },
+                                  icon: Icon(Icons.edit_rounded),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+
+                                    PesquisaController().excluir(context, id);
+
+                                  },
+                                  icon: Icon(Icons.delete_rounded),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: (){},
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: Text("Nenhuma legislação encontrada."),
+                  );
+                }
+            }
+          },
+        ),
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          salvarLegislacao(context);
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  //
+  // ADICIONAR TAREFA
+  //
+  void salvarLegislacao(context, {docId}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return AlertDialog(
+          title: Text((docId == null) ? "Adicionar Legislação" : "Editar Legislação"),
+          content: SizedBox(
+            height: 350,
+            width: 300,
+            child: Column(
+              children: [
+                TextField(
+                  controller: txtTipo,
+                  decoration: InputDecoration(
+                    labelText: 'Tipo',
+                    prefixIcon: Icon(Icons.description),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 5),
+                TextField(
+                  controller: txtTitulo,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    labelText: 'Titulo',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 5),
+                TextField(
+                  controller: txtNumero,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    labelText: 'Número',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 5),
+                TextField(
+                  controller: txtDescricao,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    labelText: 'Descrição',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 5),
+                TextField(
+                  controller: txtData,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    labelText: 'Data de Publicação',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actionsPadding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+          actions: [
+            TextButton(
+              child: Text("fechar"),
+              onPressed: () {
+                txtTitulo.clear();
+                txtDescricao.clear();
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: Text("salvar"),
+              onPressed: () {
+                //criação do objeto
+                var p = Pesquisa(
+                  LoginController().idUsuario(),
+
+                  txtTipo.text,
+                  txtTitulo.text,
+                  txtNumero.text,
+                  txtDescricao.text,
+                  txtData.text,
+
+                );
+
+                if (docId == null){
+                  PesquisaController().adicionar(context, p);
+                }else{
+                  PesquisaController().atualizar(context, docId, p);
+                }
+
+                txtTipo.clear();
+                txtTitulo.clear();
+                txtNumero.clear();
+                txtDescricao.clear();
+                txtData.clear();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
+ 
+}

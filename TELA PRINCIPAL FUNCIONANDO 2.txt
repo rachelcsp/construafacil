@@ -1,0 +1,442 @@
+import 'package:flutter/material.dart';
+
+class PrincipalView extends StatefulWidget {
+  const PrincipalView({Key? key}) : super(key: key);
+
+  @override
+  State<PrincipalView> createState() => _PrincipalViewState();
+}
+
+class _PrincipalViewState extends State<PrincipalView> {
+  TextEditingController txtTitulo = TextEditingController();
+  TextEditingController txtNumero = TextEditingController();
+  TextEditingController txtDescricao = TextEditingController();
+  TextEditingController txtData = TextEditingController();
+  TextEditingController txtPalavras = TextEditingController();
+
+  bool isSearching = false;
+
+  String? selectedCollection;
+
+  List<String> federais = [];
+  List<String> estaduais = [];
+  List<String> municipais = [];
+  List<String> outras = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 44, 27, 237),
+        title: Text(
+          'Construa Fácil',
+          style: TextStyle(color: Colors.white),
+        ),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.exit_to_app, color: Colors.white),
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircularIconButton(
+                  label: 'Federais',
+                  onTap: () {
+                    Navigator.pushNamed(context, 'federais');
+                    setState(() {
+                      isSearching = false;
+                      selectedCollection = 'Federais';
+                    });
+                  },
+                ),
+                CircularIconButton(
+                  label: 'Estaduais',
+                  onTap: () {
+                    Navigator.pushNamed(context, 'estaduais');
+                    setState(() {
+                      isSearching = false;
+                      selectedCollection = 'Estaduais';
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircularIconButton(
+                  label: 'Municipais',
+                  onTap: () {
+                    Navigator.pushNamed(context, 'municipais');
+                    setState(() {
+                      isSearching = false;
+                      selectedCollection = 'Municipais';
+                    });
+                  },
+                ),
+                CircularIconButton(
+                  label: 'Outras',
+                  onTap: () {
+                    Navigator.pushNamed(context, 'outras');
+                    setState(() {
+                      isSearching = false;
+                      selectedCollection = 'Outras';
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            if (isSearching)
+              ...[
+                TextField(
+                  controller: txtTitulo,
+                  decoration: InputDecoration(
+                    labelText: 'Titulo',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: txtNumero,
+                  decoration: InputDecoration(
+                    labelText: 'Número',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: txtDescricao,
+                  decoration: InputDecoration(
+                    labelText: 'Descrição',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: txtData,
+                  decoration: InputDecoration(
+                    labelText: 'Data de Publicação',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: txtPalavras,
+                  decoration: InputDecoration(
+                    labelText: 'Palavras-chave',
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+              ],
+            if (!isSearching && selectedCollection != null)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: getList(selectedCollection!).length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(getList(selectedCollection!)[index]),
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  return AlertDialog(
+                    title: Text("Pesquisar"),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            controller: txtTitulo,
+                            decoration: InputDecoration(
+                              labelText: 'Titulo',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: txtNumero,
+                            decoration: InputDecoration(
+                              labelText: 'Número',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: txtDescricao,
+                            decoration: InputDecoration(
+                              labelText: 'Descrição',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: txtData,
+                            decoration: InputDecoration(
+                              labelText: 'Data de Publicação',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          TextField(
+                            controller: txtPalavras,
+                            decoration: InputDecoration(
+                              labelText: 'Palavras-chave',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Fechar'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Implemente a lógica de pesquisa aqui
+                          // Suponha que encontramos uma norma fictícia
+                          String normaEncontrada = "https://exemplo.com/norma";
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return StatefulBuilder(
+                                builder: (context, setState) {
+                                  return AlertDialog(
+                                    title: Text("Norma Encontrada"),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text("Link da Norma Encontrada:"),
+                                          Text(normaEncontrada),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Não'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Mostra opções de coleção para salvar
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return StatefulBuilder(
+                                                builder: (context, setState) {
+                                                  return AlertDialog(
+                                                    title: Text("Salvar em Coleção"),
+                                                    content: SingleChildScrollView(
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          RadioListTile(
+                                                            title: Text('Federais'),
+                                                            value: 'Federais',
+                                                            groupValue: selectedCollection,
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                selectedCollection = value as String?;
+                                                              });
+                                                            },
+                                                          ),
+                                                          RadioListTile(
+                                                            title: Text('Estaduais'),
+                                                            value: 'Estaduais',
+                                                            groupValue: selectedCollection,
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                selectedCollection = value as String?;
+                                                              });
+                                                            },
+                                                          ),
+                                                          RadioListTile(
+                                                            title: Text('Municipais'),
+                                                            value: 'Municipais',
+                                                            groupValue: selectedCollection,
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                selectedCollection = value as String?;
+                                                              });
+                                                            },
+                                                          ),
+                                                          RadioListTile(
+                                                            title: Text('Outras'),
+                                                            value: 'Outras',
+                                                            groupValue: selectedCollection,
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                selectedCollection = value as String?;
+                                                              });
+                                                            },
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          if (selectedCollection != null) {
+                                                            print('Salvando na coleção: $selectedCollection');
+                                                            switch (selectedCollection) {
+                                                              case 'Federais':
+                                                                federais.add(normaEncontrada);
+                                                                break;
+                                                              case 'Estaduais':
+                                                                estaduais.add(normaEncontrada);
+                                                                break;
+                                                              case 'Municipais':
+                                                                municipais.add(normaEncontrada);
+                                                                break;
+                                                              case 'Outras':
+                                                                outras.add(normaEncontrada);
+                                                                break;
+                                                            }
+                                                            // Salva todos os campos de pesquisa
+                                                            String pesquisa = '';
+                                                            pesquisa += 'Título: ${txtTitulo.text}\n';
+                                                            pesquisa += 'Número: ${txtNumero.text}\n';
+                                                            pesquisa += 'Descrição: ${txtDescricao.text}\n';
+                                                            pesquisa += 'Data de Publicação: ${txtData.text}\n';
+                                                            pesquisa += 'Palavras-chave: ${txtPalavras.text}\n';
+                                                            print('Pesquisa salva: $pesquisa');
+                                                            Navigator.of(context).popUntil(ModalRoute.withName(Navigator.defaultRouteName));
+                                                          }
+                                                        },
+                                                        child: Text('Sim'),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                        child: Text('Cancelar'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Text('Sim'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                        child: Text('Pesquisar'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          );
+        },
+        child: isSearching ? Icon(Icons.search) : Icon(Icons.add),
+      ),
+    );
+  }
+
+  List<String> getList(String collection) {
+    switch (collection) {
+      case 'Federais':
+        return federais;
+      case 'Estaduais':
+        return estaduais;
+      case 'Municipais':
+        return municipais;
+      case 'Outras':
+        return outras;
+      default:
+        return [];
+    }
+  }
+}
+
+class CircularIconButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+
+  const CircularIconButton({
+    Key? key,
+    required this.label,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          CircleAvatar(
+            backgroundColor: Color.fromARGB(255, 44, 27, 237),
+            radius: 60,
+            child: Text(
+              label,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          SizedBox(height: 5),
+          Icon(
+            Icons.link,
+            color: Colors.black,
+          ),
+        ],
+      ),
+    );
+  }
+}
