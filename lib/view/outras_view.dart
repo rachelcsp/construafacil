@@ -9,6 +9,8 @@ import 'package:flutter/widgets.dart';
 
 
 import '../controller/login_controller.dart';
+import '../controller/outras_controller.dart';
+import '../model/outras.dart';
 
 class OutrasView extends StatefulWidget {
   const OutrasView({super.key});
